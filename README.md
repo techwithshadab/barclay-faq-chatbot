@@ -23,10 +23,11 @@ A Python tool that scrapes FAQ pages from Barclaycard US, parses Q&A pairs, and 
 
 ```bash
 # Install dependencies + Playwright browser
-bash setup.sh
+bash scripts/setup.sh
 
-# Create .env file with your OpenAI key
-echo "OPENAI_API_KEY=sk-..." > .env
+# Copy the example env file and add your OpenAI key
+cp .env.example .env
+# Then edit .env and replace sk-proj-... with your actual key
 ```
 
 ## Running the Chatbot
@@ -35,23 +36,23 @@ echo "OPENAI_API_KEY=sk-..." > .env
 uv run streamlit run app.py
 ```
 
-Opens at `http://localhost:8501`. On first launch, it builds a FAISS vector index from `faqs.jsonl` and saves it to `vectorstore/` — subsequent launches skip this step.
+Opens at `http://localhost:8501`. On first launch, it builds a FAISS vector index from `data/faqs.jsonl` and saves it to `data/vectorstore/` — subsequent launches skip this step.
 
 ## Re-scraping FAQs
 
 To refresh the FAQ data from Barclaycard:
 
 ```bash
-uv run python faq_parser.py
+uv run python src/parser/faq_parser.py
 ```
 
-Saves results to `faqs.json` (formatted) and `faqs.jsonl` (one record per line). Delete the `vectorstore/` directory afterwards so the app rebuilds the index with fresh data.
+Saves results to `data/faqs.json` and `data/faqs.jsonl`. Delete `data/vectorstore/` afterwards so the app rebuilds the index with fresh data.
 
 ## Parsing a Custom URL
 
 ```python
 import asyncio
-from faq_parser import FAQParser
+from src.parser.faq_parser import FAQParser
 
 async def parse_custom():
     parser = FAQParser(headless=True, timeout=60000)
@@ -87,7 +88,7 @@ class QAPair(BaseModel):
 ## Troubleshooting
 
 **No Q&A pairs extracted?**
-- Inspect `debug_page.html` (written on every `faq_parser.py` run) to see the raw fetched HTML
+- Inspect `data/debug_page.html` (written on every `src/parser/faq_parser.py` run) to see the raw fetched HTML
 - Increase timeout: `FAQParser(timeout=90000)`
 
 **Playwright browser issues?**

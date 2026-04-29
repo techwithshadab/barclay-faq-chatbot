@@ -370,7 +370,7 @@ class FAQParser:
             logger.error(f"Error parsing URL {url}: {e}")
             raise
 
-    def save_to_json(self, qa_pairs: list[QAPair], output_file: str = "faqs.json"):
+    def save_to_json(self, qa_pairs: list[QAPair], output_file: str = "data/faqs.json"):
         """Save Q&A pairs to JSON file"""
         output_path = Path(output_file)
         data = [qa.model_dump() for qa in qa_pairs]
@@ -381,7 +381,7 @@ class FAQParser:
         logger.success(f"Saved {len(qa_pairs)} Q&A pairs to {output_path}")
         return output_path
 
-    def save_to_jsonl(self, qa_pairs: list[QAPair], output_file: str = "faqs.jsonl"):
+    def save_to_jsonl(self, qa_pairs: list[QAPair], output_file: str = "data/faqs.jsonl"):
         """Save Q&A pairs to JSONL format (one JSON per line) for RAG systems"""
         output_path = Path(output_file)
 
@@ -407,9 +407,9 @@ async def main():
 
         # Fetch and save HTML for inspection
         html_content, _ = await parser.fetch_page(url)
-        with open("debug_page.html", "w", encoding="utf-8") as f:
+        with open("data/debug_page.html", "w", encoding="utf-8") as f:
             f.write(html_content)
-        logger.info("Saved HTML to debug_page.html for inspection")
+        logger.info("Saved HTML to data/debug_page.html for inspection")
 
         qa_pairs = parser.parse_faq_content(html_content, url)
 

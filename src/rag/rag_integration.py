@@ -18,7 +18,7 @@ except ImportError:
 class FAQRAGIntegration:
     """Integrate parsed FAQs with RAG systems"""
 
-    def __init__(self, faq_file: str = "faqs.jsonl"):
+    def __init__(self, faq_file: str = "data/faqs.jsonl"):
         self.faq_file = Path(faq_file)
         self.documents = []
 

@@ -17,8 +17,8 @@ from langchain_core.prompts import PromptTemplate
 
 load_dotenv()
 
-FAQS_FILE = Path("faqs.jsonl")
-VECTORSTORE_PATH = Path("vectorstore")
+FAQS_FILE = Path("data/faqs.jsonl")
+VECTORSTORE_PATH = Path("data/vectorstore")
 
 PROMPT_TEMPLATE = PromptTemplate(
     input_variables=["context", "question"],
@@ -47,7 +47,7 @@ def load_vectorstore() -> FAISS:
         )
 
     if not FAQS_FILE.exists():
-        st.error("faqs.jsonl not found. Run `uv run python faq_parser.py` first.")
+        st.error("data/faqs.jsonl not found. Run `uv run python src/parser/faq_parser.py` first.")
         st.stop()
 
     docs = []

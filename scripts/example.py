@@ -4,7 +4,11 @@ Run this to extract FAQs and see the results
 """
 
 import asyncio
-from Barclays.faq_parser import FAQParser
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from src.parser.faq_parser import FAQParser
 
 
 async def quick_demo():
@@ -53,8 +57,8 @@ async def quick_demo():
         print("SAVING OUTPUT")
         print("=" * 70)
 
-        json_file = parser.save_to_json(qa_pairs, "faqs.json")
-        jsonl_file = parser.save_to_jsonl(qa_pairs, "faqs.jsonl")
+        json_file = parser.save_to_json(qa_pairs, "data/faqs.json")
+        jsonl_file = parser.save_to_jsonl(qa_pairs, "data/faqs.jsonl")
 
         print(f"\n✓ JSON file: {json_file}")
         print(f"✓ JSONL file: {jsonl_file}")
